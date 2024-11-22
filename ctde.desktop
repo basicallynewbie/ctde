@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=ctde
+Exec=/path/to/ctde.py
+Type=Application
+StartupNotify=true
+Terminal=false
+Comment=A script to start desktop environmont in container
