@@ -25,3 +25,6 @@ Add this in ~/.ssh/config to login CT without password:
 # For ctde.desktop:
 
   Change /path/to/ctde.py to the real path of ctde.py.
+
+# detail
+https://discuss.linuxcontainers.org/t/autostart-container-desktop-environment/
