@@ -9,24 +9,24 @@ from time import sleep
 class Start:
     def __init__(
             self, 
-            compositor: str, 
+            compositor_socket: str, 
             platform: str, 
             instance: str, 
             user: str,
             ip: str
             ) -> None:
         
-        self.compositor = compositor
+        self.compositor_socket = compositor_socket
         self.platform = platform
         self.instance = instance
         self.user = user
         self.ip = ip
         self.count_down = 5
     
-    def checkCompositor(self) -> bool:
-        compositor = Path(self.compositor)
-        if not compositor.is_socket():
-            exit(f'cannot find {self.compositor}')
+    def checkCompositorSocket(self) -> bool:
+        compositor_socket = Path(self.compositor_socket)
+        if not compositor_socket.is_socket():
+            exit(f'cannot find {self.compositor_socket}')
         else:
             return True
     
@@ -43,12 +43,15 @@ class Start:
             encoding='utf-8'
             )
         self.status = loads(state.stdout)
-        if self.count_down > 0:
-            if self.status['status'] in ['Started','Starting', 'Success']:
+        if self.status['status'] == 'Running':
+            return True
+        elif self.count_down > 0:
+            if self.status['status'] in ['Started', 'Starting', 'Success']:
+                self.count_down -= 1
                 sleep(3)
                 self.checkInstance()
-                self.count_down -= 1
             elif self.status['status'] == 'Stopped':
+                self.count_down -= 1
                 run([
                     self.platform, 
                     'query', 
@@ -60,14 +63,12 @@ class Start:
                     ])
                 sleep(5)
                 self.checkInstance()
-                self.count_down -= 1
-            elif self.status['status'] == 'Running':
-                return True
         else:
             exit(f'cannot start {self.instance}')
+            return False
     
-    def startGUI(self):
-        if self.checkCompositor() and self.checkInstance():
+    def startGUI(self) -> None:
+        if self.checkCompositorSocket() and self.checkInstance():
             run(['ssh', f'{self.user}@{self.ip}'])
     
     def __call__(self) -> None:
