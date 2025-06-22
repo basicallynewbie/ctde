@@ -13,7 +13,11 @@ if ! [ $status -eq 0 ]; then
     nohup startxfce4 > /dev/null 2>&1 &
 fi
 
-# example for running labwc in container
+# example for running labwc in container, remember wayland also depend on XDG_RUNTIME_DIR
+if [ -z "$WAYLAND_DISPLAY" ] ; then
+    export WAYLAND_DISPLAY=wayland-1
+fi
+
 if ! [ -S "$XDG_RUNTIME_DIR/wayland-0" ] ; then
     nohup labwc > /dev/null 2>&1 &
 fi
