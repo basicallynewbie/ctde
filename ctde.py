@@ -15,6 +15,8 @@ class Start:
         instance: str,
         user: str,
         desktop_start_cmd: str,
+        gid: int = 1000,
+        uid: int = 1000
     ) -> None:
 
         self.compositor = compositor
@@ -22,6 +24,8 @@ class Start:
         self.instance = instance
         self.user = user
         self.desktop_start_cmd = desktop_start_cmd
+        self.gid = gid
+        self.uid = uid
         self.count_down = 5
 
     def checkCompositor(self) -> bool:
@@ -80,7 +84,7 @@ class Start:
                     "POST",
                     f"/1.0/instances/{self.instance}/exec",
                     "--data",
-                    f'{{"command":["bash","-c","{self.desktop_start_cmd}"],"environment":{{"SHELL":"/bin/bash","CWD":"/home/{self.user}","HOME":"/home/{self.user}","USER":"{self.user}","PATH":"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"}},"group":1000,"user":1000}}',
+                    f'{{"command":["bash","-c","{self.desktop_start_cmd}"],"environment":{{"SHELL":"/bin/bash","CWD":"/home/{self.user}","HOME":"/home/{self.user}","USER":"{self.user}","PATH":"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"}},"group":{self.gid},"user":{self.uid}}}',
                 ]
             )
         else:
@@ -91,5 +95,6 @@ class Start:
 
 
 if __name__ == "__main__":
+    # default gid and uid is 1000, add them if needed
     Start("/run/user/1000/wayland-1", "incus", "htpc", "lxc", "labwc")()
     # Start('/tmp/.X11-unix/X0', 'lxc', 'htpc', 'username', 'mate-session')()
