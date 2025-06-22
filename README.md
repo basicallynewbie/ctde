@@ -1,26 +1,10 @@
-# For ssh no password login:
+# update
 
-In CT:
-
-    sed -i 's/#PubkeyAuthentication/PubkeyAuthentication/g' /etc/ssh/sshd_config 
-        
-    echo -e "TCPKeepAlive yes\nClientAliveInterval 300\nClientAliveCountMax 2" > /etc/ssh/sshd_config 
-        
-In host:
-
-    ssh-keygen 
-        
-    ssh-copy-id -i <private key> containerUser@containerIp
-        
-Add this in ~/.ssh/config to login CT without password:
-
-    Host <ip>
-        
-      IdentityFile /home/userName/.ssh/<private key>
+  no need ssh now, can start instance with api.
 
 # For ctde.py:
 
-  Change Start('the path to your compositor', 'cmd of your container manager only support "lxc" for LXD and "incus" for Incus', 'name of the container', 'username in container', 'ip of container')() in if \__name__ == '\__main__' to fit you.
+  Change Start('the path to your compositor', 'cmd of your container manager only support "lxc" for LXD and "incus" for Incus', 'name of the container', 'username in container', 'startcmd of desktop like sway|labwc|startx|mate-session...')() in if \__name__ == '\__main__' to fit you.
 
 # For ctde.desktop:
 
@@ -28,3 +12,5 @@ Add this in ~/.ssh/config to login CT without password:
 
 # detail
 https://discuss.linuxcontainers.org/t/autostart-container-desktop-environment/
+https://discuss.linuxcontainers.org/t/an-update-about-nest-x11/
+https://discuss.linuxcontainers.org/t/its-possible-to-run-containerlized-x11-without-nesting-or-vnc-or-rdp-but-i-need-help-with-input/
